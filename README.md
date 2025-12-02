@@ -7,3 +7,9 @@ Folders:
  - beautique: The source code project
  - db_beautique: data persistence
  - infrastructure: docker-compose and schema SQL.
+
+## Technologies:
+   - Java 17
+   - Maven
+   - PostgreSql
+   - Flyway: to change the not null configutations of some fields in database.
