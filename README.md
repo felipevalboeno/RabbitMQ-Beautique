@@ -12,4 +12,4 @@ Folders:
    - Java 17
    - Maven
    - PostgreSql
-   - Flyway: to change the not null configutations of some fields in database.
+   - Flyway: To create some migrations and to change the not null configutations of some fields in database.
