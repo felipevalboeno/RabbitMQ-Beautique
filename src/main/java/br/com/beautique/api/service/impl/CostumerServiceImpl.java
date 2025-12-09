@@ -38,5 +38,25 @@ public class CostumerServiceImpl implements CustomerService {
         customerRepository.delete(customerEntityOptional.get());
     }
 
+    @Override
+    public CustomerDTO update(CustomerDTO customerDTO) { //recebe e retorna customerDTO
+        //filtrando por id usando repository e retornando um optional
+        Optional<CustomerEntity> customerEntityOptional = customerRepository.findById(customerDTO.getId());
+        //se o optional vier vazio, lança exceção
+        if (customerEntityOptional.isEmpty()){
+            throw new RuntimeException("Customer not found");
+        }
+        //converte o DTO para customerEntity
+        CustomerEntity customerEntity = convertUtil.convertToSource(customerDTO);
+
+        //persistindo dados da entity
+        customerEntity.setAppointments(customerEntityOptional.get().getAppointments());
+        //persistindo o campo createdAt pois temos objeto novo aqui
+        customerEntity.setCreatedAt(customerEntityOptional.get().getCreatedAt());
+
+        //salvando a customerEntity e convertando o resultado pra um DTO
+        return convertUtil.convertToTarget(customerRepository.save(customerEntity));
+    }
+
 
 }

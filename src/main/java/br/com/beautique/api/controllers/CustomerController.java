@@ -28,5 +28,10 @@ public class CustomerController {
         customerService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping()
+    ResponseEntity<CustomerDTO> update(@RequestBody CustomerDTO customerDTO){
+        return ResponseEntity.ok(customerService.update(customerDTO));
+    }
 }
 
