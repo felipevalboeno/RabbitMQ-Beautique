@@ -8,6 +8,8 @@ import br.com.beautique.api.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CostumerServiceImpl implements CustomerService {
 
@@ -25,4 +27,16 @@ public class CostumerServiceImpl implements CustomerService {
         return convertUtil.convertToTarget(newcustomerEntity);
 
     }
+
+    @Override
+    public void delete(Long id) {
+        //Optional é uma classe container que pode conter um valor não nulo
+        Optional<CustomerEntity> customerEntityOptional = customerRepository.findById(id);
+        if(customerEntityOptional.isEmpty()){
+            throw new RuntimeException("Customer not found");
+        }
+        customerRepository.delete(customerEntityOptional.get());
+    }
+
+
 }

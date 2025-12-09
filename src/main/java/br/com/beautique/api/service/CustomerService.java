@@ -6,4 +6,5 @@ import br.com.beautique.api.entities.CustomerEntity;
 public interface CustomerService {
 
     CustomerDTO create(CustomerDTO customerEntity);
+    void delete(Long id);
 }
