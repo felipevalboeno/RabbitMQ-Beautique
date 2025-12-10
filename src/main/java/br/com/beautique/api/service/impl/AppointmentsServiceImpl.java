@@ -45,6 +45,9 @@ public class AppointmentsServiceImpl implements AppointmentsService {
 
     @Override
     public void deleteById(Long id) {
+        AppointmentsEntity appointmentsEntity =  appointmentRepository.findById(id)
+                .orElseThrow(()  -> new RuntimeException("Appointment not found"));
+        appointmentRepository.delete(appointmentsEntity);
 
     }
 
