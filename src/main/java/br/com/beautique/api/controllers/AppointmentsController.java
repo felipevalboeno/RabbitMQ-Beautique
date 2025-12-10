@@ -32,4 +32,9 @@ public class AppointmentsController {
     }
 
 
+    @PutMapping
+    ResponseEntity<AppointmentDTO> setCustomerToAppointment(@RequestBody AppointmentDTO appointmentDTO){
+        return ResponseEntity.ok(appointmentsService.setCustomerToAppointment(appointmentDTO));
+    }
+
 }
