@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class AppointmentsEntity  extends BaseEntity{
 
     @Column(nullable = false, updatable = true)
-    private LocalDateTime dataTime;
+    private LocalDateTime dateTime;
 
     @Column(nullable = false)
     private Boolean appointmentOpen;
