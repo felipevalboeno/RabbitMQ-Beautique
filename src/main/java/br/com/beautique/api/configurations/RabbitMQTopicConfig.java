@@ -13,7 +13,7 @@ public class RabbitMQTopicConfig {
     private final String exchangeName = "beautiqueExchange";
 
     @Bean
-    TopicExchange exchange(){
+    public TopicExchange exchange(){
         return new TopicExchange(exchangeName);
     }
 
