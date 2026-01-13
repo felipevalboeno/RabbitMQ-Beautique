@@ -3,6 +3,7 @@ package br.com.beautique.api.service.impl;
 import br.com.beautique.api.dtos.CustomerDTO;
 import br.com.beautique.api.entities.CustomerEntity;
 import br.com.beautique.api.repository.CustomerRepository;
+import br.com.beautique.api.service.BrokerService;
 import br.com.beautique.api.service.CustomerService;
 import br.com.beautique.api.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class CostumerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private BrokerService brokerService;
+
     // CustomerEntity = Source, CustomerDTO = target
     private final ConvertUtil<CustomerEntity, CustomerDTO> convertUtil = new ConvertUtil<>(CustomerEntity.class, CustomerDTO.class);
 
@@ -24,6 +28,7 @@ public class CostumerServiceImpl implements CustomerService {
 
         CustomerEntity customerEntity = convertUtil.convertToSource(customerDto);
         CustomerEntity newcustomerEntity = customerRepository.save(customerEntity);
+        sendCustomerToQueue(newcustomerEntity);
         return convertUtil.convertToTarget(newcustomerEntity);
 
     }
@@ -54,8 +59,22 @@ public class CostumerServiceImpl implements CustomerService {
         //persistindo o campo createdAt pois temos objeto novo aqui
         customerEntity.setCreatedAt(customerEntityOptional.get().getCreatedAt());
 
+        CustomerDTO updateCustomerDTO = convertUtil.convertToTarget(customerRepository.save(customerEntity));
+        sendCustomerToQueue(customerEntity);
         //salvando a customerEntity e convertando o resultado pra um DTO
-        return convertUtil.convertToTarget(customerRepository.save(customerEntity));
+        return updateCustomerDTO;
+    }
+
+    
+    private void sendCustomerToQueue(CustomerEntity customerEntity) {
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .id(customerEntity.getId())
+                .name(customerEntity.getName())
+                .email(customerEntity.getEmail())
+                .phone(customerEntity.getPhone())
+                .build();
+                brokerService.send("customer", customerDTO);
+    
     }
 
 
